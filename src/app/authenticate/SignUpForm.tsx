@@ -21,6 +21,8 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { signUp } from "./auth.action";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export const signUpSchema = z
   .object({
@@ -35,6 +37,7 @@ export const signUpSchema = z
   });
 
 const SignUpForm = () => {
+  const router = useRouter();
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
@@ -46,7 +49,14 @@ const SignUpForm = () => {
   });
 
   async function onSubmit(values: z.infer<typeof signUpSchema>) {
-    await signUp(values)
+    const res = await signUp(values)
+
+    if (res.success) {
+      toast.success('Account Got Created')
+      router.push('/dashboard')
+    } else {
+      toast.error(res.error)
+    }
     console.log(values);
   }
   return (

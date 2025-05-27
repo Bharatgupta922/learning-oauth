@@ -20,6 +20,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
+import { signIn, signUp } from "./auth.action";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export const signInSchema = z.object({
   email: z.string().email(),
@@ -27,6 +30,7 @@ export const signInSchema = z.object({
 });
 
 const SighInForm = () => {
+  const router = useRouter()
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -35,11 +39,18 @@ const SighInForm = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof signInSchema>) {
+  async function onSubmit(values: z.infer<typeof signInSchema>) {
+      const res = await signIn(values)
+      if (res.success) {
+        toast.success('Login Successful')
+        router.push('/dashboard')
+      } else {
+        toast.error(res.error)
+      }
     console.log(values);
   }
   return (
-    <Card>
+    <Card className="min-w-[500px]">
       <CardHeader>WelCome Back!</CardHeader>
       <CardDescription>Sign In to your account to Continue!</CardDescription>
       <CardContent className="space-y-2">
