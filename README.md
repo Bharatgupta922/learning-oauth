@@ -1,10 +1,10 @@
 ## PFB Flow Chart of Google OAuth2.0 Abstract Protocol Flow
 
-<img src="images/flowdiagram.png" alt="Screenshot" width="600" height="400"/>
+<img src="images/flowdiagram.png" alt="Screenshot" width="700" height="400"/>
 
 ## Here is an example of the Abstract Protocol Flow Requests
 
-<img src="images/example.png" alt="Screenshot" width="600" height="400"/>
+<img src="images/example.png" alt="Screenshot" width="700" height="400"/>
 
 
 
