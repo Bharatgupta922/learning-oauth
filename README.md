@@ -1,3 +1,13 @@
+## PFB Flow Chart of Google OAuth2.0 Abstract Protocol Flow
+
+<img src="images/flowdiagram.png" alt="Screenshot" width="400"/>
+
+## Here is an example of the Abstract Protocol Flow Requests
+
+<img src="images/example.png" alt="Screenshot" width="400"/>
+
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
