@@ -8,6 +8,8 @@ import { lucia } from "@/lib/lucia"
 import { cookies } from "next/headers"
 import { signInSchema } from "./SignInForm"
 import { redirect } from "next/navigation"
+import { generateCodeVerifier, generateState } from "arctic"
+import { googleOAuthClient } from "@/lib/googleOauth"
 
 export const signUp = async (values: z.infer<typeof signUpSchema>) => {
     try {
@@ -68,4 +70,21 @@ export const logout = async () => {
     const sessionCookie = await lucia.createBlankSessionCookie()
     cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes)
     return redirect('/authenticate')    
+}
+
+export const getGoogleOAuthConsentUrl = async () => {
+    try {
+        const state = generateState()
+        const codeVerifier = generateCodeVerifier()
+        cookies().set('state', state, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production'
+        })
+
+        const authUrl = await googleOAuthClient.createAuthorizationURL(state, codeVerifier, ['email', 'profile'])
+        return { url: authUrl.toString(), success: true }
+    } catch (error) {
+        console.error('Error generating Google OAuth consent URL:', error)
+        return null
+    }
 }
