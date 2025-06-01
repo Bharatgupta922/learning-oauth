@@ -80,7 +80,10 @@ export const getGoogleOAuthConsentUrl = async () => {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production'
         })
-
+        cookies().set('codeVerifier', codeVerifier, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production'
+        })
         const authUrl = await googleOAuthClient.createAuthorizationURL(state, codeVerifier, ['email', 'profile'])
         return { url: authUrl.toString(), success: true }
     } catch (error) {

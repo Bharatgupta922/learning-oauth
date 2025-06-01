@@ -28,13 +28,14 @@ export async function GET(request: NextRequest) {
         return new Response("INVALID REQUEST", { status: 400 })
     }
 
-    const { accessToken } = await googleOAuthClient.validateAuthorizationCode(code, codeVerifier)
+    const tokens = await googleOAuthClient.validateAuthorizationCode(code, codeVerifier)
+    const accessToken = tokens.accessToken()
     if (!accessToken) {
         console.log("Failed to validate authorization code")
         return new Response("AUTHORIZATION FAILED", { status: 400 })
     }
 
-    const googleResponse = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+    const googleResponse = await fetch("https://www.googleapis.com/oauth2/v1/userinfo", {
         headers: {
             Authorization: `Bearer ${accessToken}`,
         },
@@ -59,6 +60,7 @@ export async function GET(request: NextRequest) {
     if (existingUser) {
         userId = existingUser.id;
     } else {
+        console.log('>>>>>>>>>>>>>>>>>', googleData)
         const newUser = await prisma.user.create({
             data: {
                 email: googleData.email,
